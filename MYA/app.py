@@ -8,5 +8,5 @@ while True:
         break
 
     memory.salvarDB('user', question)
-    resposta = chat.enviar_menssagem()
+    resposta = chat.enviar_menssagem(question)
     memory.salvarDB('Mya', resposta)

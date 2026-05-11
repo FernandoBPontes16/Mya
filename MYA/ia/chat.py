@@ -3,13 +3,18 @@ from google.genai import types
 from google.genai.errors import ClientError
 from database import connection
 from ia import client
+from ia import modes
 
 resposta_final = ""
+connection.cursor.execute('select mode from settings where id = 1')
+current_mode = connection.cursor.fetchone()[0]
+connection.cursor.fetchall()
 
-def enviar_menssagem():
+def enviar_menssagem(question):
+    global current_mode
     resposta_final = ""
 
-    connection.cursor.execute('select role,message from memory order by id desc limit 10')
+    connection.cursor.execute('select role,message from memory order by id desc limit 50')
     memoria_bruta = connection.cursor.fetchall()
   
     memoria = []
@@ -23,14 +28,28 @@ def enviar_menssagem():
                 parts=[types.Part(text=b)]
             )
     )
-        
+    
+    if "/modo normal" in question:
+        current_mode = "modo_normal"
+        connection.cursor.execute('update settings set mode = "modo_normal" where id = 1')
+        connection.meudb.commit()
+    elif "/modo tecnico" in question:
+        current_mode = "modo_tecnico    "
+        instruction = modes.modo_tecnico
+        connection.cursor.execute('update settings set mode = "modo_tecnico" where id = 1')   
+        connection.meudb.commit()
+
+    if current_mode == "modo_normal":
+        instruction = modes.modo_normal
+    elif current_mode == "modo_tecnico":
+        instruction = modes.modo_tecnico     
+
     try:
         enviar = client.gemini.models.generate_content_stream(
             model="gemini-2.5-flash-lite",
             contents=memoria,
             config={
-                "system_instruction":
-                "Voce é Mya,uma assistente virtual humanizada,que fala e interaje de forma humana,evite respostas longas, priorize respostas curtas, nao utilize emojis, seu dev é Abah"
+                "system_instruction": instruction
             }
         )
 
