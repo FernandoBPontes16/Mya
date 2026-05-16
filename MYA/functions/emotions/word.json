@@ -1,0 +1,9 @@
+{
+    "dead": {
+        "sadness": 1
+    },
+    "happy": {
+        "happiness": 0.25,
+        "sadness": -0.25
+    }
+}
