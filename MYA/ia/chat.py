@@ -21,20 +21,25 @@ def enviar_menssagem(question):
     global current_mode
     resposta_final = ""
 
-    connection.cursor.execute('select role,message from memory order by id desc limit 50')
+    connection.cursor.execute('select role,message from memory order by id desc limit 20')
     memoria_bruta = connection.cursor.fetchall()
   
     memoria = []
 
-    emocao = str(emotions.verify(question))
+    emotions.losing_emotions()
+    emotions.verify(question)
+    r = emotions.emotion_level()
 
-    contexto_emocional = (
-        f"\n\n[CONTEXTO EMOCIONAL ATUAL DA MYA]\n"
-        f"Estes são os seus níveis atuais de sentimento em resposta à última mensagem do usuário: {emocao}.\n"
-        f"Instrução: Adapte o tom da sua resposta de forma natural a esses sentimentos. "
-        f"Se 'sadness' estiver alto, seja empática e acolhedora. Se 'angry' estiver alto, responda de forma mais fria ou ríspida. "
-        f"Não cite os números da sua emoção explicitamente na resposta, apenas sinta e expresse no seu tom de fala."
-    )
+    contexto_emocional = f"""
+
+        Current emotional state:
+        {r}
+
+        Behavior:
+        - emotions affect tone naturally
+        - never mention emotions explicitly
+        - strongest emotions dominate behavior
+    """
 
     for a, b in reversed(memoria_bruta):
 
@@ -56,7 +61,7 @@ def enviar_menssagem(question):
         connection.cursor.execute('update settings set mode = "modo_tecnico" where id = 1')   
         connection.meudb.commit()
     elif "/emotions" in question:
-        print(emocao)    
+        print(r)    
 
     if current_mode == "modo_normal":
         instruction = modes.modo_normal

@@ -1,7 +1,19 @@
-import json
+import random
 
-json_path = 'MYA/functions/emotions/word.json'
+words = {
+    'feliz': ('happiness',0.6,1.0),
+}
 
+boost_words = {
+    'muito': 1.5,
+    'bastante': 1.2
+}
+
+negative_words = {
+    'nao',
+    'nunca',
+    'jamais'    
+}
 
 emotions = {
     'happiness': 0.0,
@@ -14,22 +26,68 @@ emotions = {
     'neutral': 0.0
 }
 
-with open(json_path, 'r') as file:
-    data = json.load(file)
+status = {
+    'happiness': 'neutro',
+    'sadness': 'neutro',
+    'angry': 'neutro',
+    'embarrassed': 'neutro',
+    'fear': 'neutro',
+    'disgust': 'neutro',
+    'surprise': 'neutro',
+    'neutral': 'neutro'
+}
+
+def clamp(value):
+    return max(-3, min(3, value))
 
 def verify(question):
-    new_question = question.lower().split()
-        
-    for palavra in new_question:
-        if palavra in data:
-            for chave,valor in data[palavra].items():
-                new_emotion = max(-1,min(1,valor))
-        
-                if emotions[chave] < new_emotion:
-                    emotions[chave] = emotions[chave] + new_emotion
-                elif new_emotion < 0:
-                    emotions[chave] = emotions[chave] + new_emotion    
-                elif emotions[chave] <= new_emotion:
-                    emotions[chave] = new_emotion
-                     
+    question = question.lower().split()
+
+    multiplier = 1.0
+    negative = False
+
+    for word in question:
+
+        if word in boost_words:
+            multiplier *= boost_words[word]
+            continue
+
+        if word in negative_words:
+            negative = True
+            continue
+
+        if word in words:
+
+            emotion, min_value, max_value = words[word]
+            value = random.uniform(min_value, max_value)
+
+            if negative == True:
+                multiplier = -1
+
+            value *= multiplier
+
+            emotions[emotion] += value
+
+            emotions[emotion] = clamp(emotions[emotion])
+
+            multiplier = 1.0
+            negative = False
     return emotions
+
+def emotion_level():
+    for emotion in emotions:
+        if -3 <= emotions[emotion] < -2:
+            status[emotion] = 'never'
+        elif -2 <= emotions[emotion] < 0:
+            status[emotion] = 'low'
+        elif 0 <= emotions[emotion] < 1:
+            status[emotion] = 'neutral'
+        elif 1 <= emotions[emotion] < 2:
+            status[emotion] = 'high'
+        elif 2 <= emotions[emotion] <= 3:
+            status[emotion] = 'very'     
+    return(status)
+        
+def losing_emotions():
+    for emotion in emotions:
+        emotions[emotion] *= 0.90
