@@ -9,8 +9,13 @@ from ia import modes
 
 resposta_final = ""
 connection.cursor.execute('select mode from settings where id = 1')
-current_mode = connection.cursor.fetchone()[0]
+result = connection.cursor.fetchone()
 connection.cursor.fetchall()
+
+if result:
+    current_mode = result[0]
+else:
+    current_mode = 'modo_normal'
 
 def enviar_menssagem(question):
     global current_mode
