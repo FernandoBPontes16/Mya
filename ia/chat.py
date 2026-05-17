@@ -23,7 +23,7 @@ def enviar_menssagem(question):
     global current_mode
     resposta_final = ""
 
-    memoria_resumida = summary.resumir(question)
+    memoria_resumida = summary.resumir()
 
     emotions.losing_emotions()
     emotions.verify(question)
