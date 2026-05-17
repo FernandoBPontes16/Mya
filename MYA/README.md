@@ -16,13 +16,27 @@ Seguindo as instruções abaixo será possível executar
 
 ### 🔧Instalação
 
+0. Caso não tenha git,python ou pip execute:
+
+```bash
+winget install Python.Python.3.14 Git.Git --silent --accept-source-agreements --accept-package-agreements
+```
+
 1. Clone o repositório
+
+```bash
+cd %USERPROFILE%\Documents
+```
 
 ```bash
 git clone https://github.com/FernandoBPontes16/Mya.git
 ```
 
 2. Instale as depêndencias
+
+```bash
+cd Mya
+```
 
 ```bash
 pip install -r requirements.txt
