@@ -7,10 +7,12 @@ from functions.emotions import emotions
 from ia import client
 from ia import modes
 
+minimo = 0
 resposta_final = ""
 connection.cursor.execute('select mode from settings where id = 1')
 result = connection.cursor.fetchone()
 connection.cursor.fetchall()
+
 
 if result:
     current_mode = result[0]
@@ -21,7 +23,7 @@ def enviar_menssagem(question):
     global current_mode
     resposta_final = ""
 
-    memoria_resumida = summary.resumir()
+    memoria_resumida = summary.resumir(question)
 
     emotions.losing_emotions()
     emotions.verify(question)
@@ -36,10 +38,13 @@ def enviar_menssagem(question):
         - emotions affect tone naturally
         - never mention emotions explicitly
         - strongest emotions dominate behavior
+    """
 
-        
-        Summary of the last 20 messages:
+    contexto_local = f"""
         {memoria_resumida}
+        
+        current question:
+        {question}
     """
     
     if "/modo normal" in question:
@@ -63,7 +68,7 @@ def enviar_menssagem(question):
     try:
         enviar = client.gemini.models.generate_content_stream(
             model="gemini-2.5-flash",
-            contents=question,
+            contents=contexto_local,
             config={
                 "system_instruction": final_instruction
             }

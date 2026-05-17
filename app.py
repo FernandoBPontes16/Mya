@@ -2,7 +2,7 @@ from functions import memory
 from ia import chat
 
 while True:
-    question = input("User: ")
+    question = input("User: ")   
     
     if question == "/exit":
         break
