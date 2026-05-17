@@ -2,10 +2,10 @@ from openai import RateLimitError
 from google.genai import types
 from google.genai.errors import ClientError
 from database import connection
+from functions import summary
 from functions.emotions import emotions 
 from ia import client
 from ia import modes
-
 
 resposta_final = ""
 connection.cursor.execute('select mode from settings where id = 1')
@@ -21,10 +21,7 @@ def enviar_menssagem(question):
     global current_mode
     resposta_final = ""
 
-    connection.cursor.execute('select role,message from memory order by id desc limit 20')
-    memoria_bruta = connection.cursor.fetchall()
-  
-    memoria = []
+    memoria_resumida = summary.resumir()
 
     emotions.losing_emotions()
     emotions.verify(question)
@@ -39,17 +36,11 @@ def enviar_menssagem(question):
         - emotions affect tone naturally
         - never mention emotions explicitly
         - strongest emotions dominate behavior
+
+        
+        Summary of the last 20 messages:
+        {memoria_resumida}
     """
-
-    for a, b in reversed(memoria_bruta):
-
-        papel = 'user' if a.lower() == 'user' else 'model'
-        memoria.append(
-            types.Content(
-                role=papel,
-                parts=[types.Part(text=b)]
-            )
-    )
     
     if "/modo normal" in question:
         current_mode = "modo_normal"
@@ -71,15 +62,16 @@ def enviar_menssagem(question):
     final_instruction = instruction + contexto_emocional
     try:
         enviar = client.gemini.models.generate_content_stream(
-            model="gemini-2.5-flash-lite",
-            contents=memoria,
+            model="gemini-2.5-flash",
+            contents=question,
             config={
                 "system_instruction": final_instruction
             }
         )
 
-    except RateLimitError:
-        print("Mya sleeping.... (rate limit hit, try again later)")
+    except RateLimitError as e:
+        print(f"detalhes do erro: {e}")
+        print("Mya: Mya is so tired.... (API limit hit, try again after 60 seconds)")
         return
     
     try:
@@ -93,5 +85,6 @@ def enviar_menssagem(question):
 
         return resposta_final
     
-    except ClientError:
+    except ClientError as e:
+        print(f"detalhes do erro: {e}")
         print("Mya is so tired.... (API limit hit, try again after 60 seconds)")
