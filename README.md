@@ -10,13 +10,15 @@ Seguindo as instruções abaixo será possível executar
 
 ### 📝 Pré-requisitos
 
-- python 3.10+
+- Windows
+- Python 3.10+
 - MySQL
-- Gemini API key
+- Gemini API Key
+- Git
 
 ### 🔧Instalação
 
-0. Caso não tenha git,python ou pip execute:
+0. Caso não tenha git,python ou pip execute(opcional):
 
 ```bash
 winget install Python.Python.3.14 Git.Git --silent --accept-source-agreements --accept-package-agreements
@@ -26,17 +28,11 @@ winget install Python.Python.3.14 Git.Git --silent --accept-source-agreements --
 
 ```bash
 cd %USERPROFILE%\Documents
-```
-
-```bash
 git clone https://github.com/FernandoBPontes16/Mya.git
-```
-
-2. Instale as depêndencias
-
-```bash
 cd Mya
 ```
+
+2. Instale as dependências
 
 ```bash
 pip install -r requirements.txt
@@ -44,7 +40,7 @@ pip install -r requirements.txt
 
 3. Altere dados
 
-Altere os dados do .env para utilização da Mya
+Troque o nome de .env.example para .env e preencha os dados
 
 Exemplo:
 
@@ -57,17 +53,26 @@ DB_NAME=your_database
 ```
 
 4. Executar projeto
-
+```bash
 python app.py
+```
 
 ## ⚒️ Ferramentas Utilizadas
 
 - Python
-- MySQL
 - Gemini API
-- python-dotenv
+- MySQL
+- google-genai
 - mysql-connector-python
-- openai
+- python-dotenv
+- openai`
+
+## 🪛 Funções:
+
+- Sistema simples de emoção
+- Conversas com memoria
+- Respostas utilizando stream
+- Memoria com MySQL 
 
 ## 👤 Desenvolvedor
 
