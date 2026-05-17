@@ -45,3 +45,4 @@ def resumir():
                 print('Mente da Mya ficou sobrecarregada... Pegando uma save de memoria')
                 response_local = response.text
                 return response_local
+        return response_local
