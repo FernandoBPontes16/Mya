@@ -7,6 +7,7 @@ from functions.emotions import emotions
 from ia import client
 from ia import modes
 
+cache = []
 minimo = 0
 resposta_final = ""
 connection.cursor.execute('select mode from settings where id = 1')
@@ -24,6 +25,7 @@ def enviar_menssagem(question):
     resposta_final = ""
 
     memoria_resumida = summary.resumir()
+    cache.append(summary.cache_localU(question))
 
     emotions.losing_emotions()
     emotions.verify(question)
@@ -41,7 +43,11 @@ def enviar_menssagem(question):
     """
 
     contexto_local = f"""
+        memory:
         {memoria_resumida}
+
+        last 5 mg of yours and the user's:
+        {cache}
         
         current question:
         {question}
@@ -87,7 +93,7 @@ def enviar_menssagem(question):
                 resposta_final += chunk.text
         print()    
         resposta_final = resposta_final.replace('"', '')
-
+        cache.append(summary.cache_localI(resposta_final))
         return resposta_final
     
     except ClientError as e:

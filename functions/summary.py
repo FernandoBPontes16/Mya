@@ -6,13 +6,19 @@ minimo = 0
 response_local = None
 cache = []
 
-def cache_local(question):
+def cache_localU(question):
         global cache
         if len(cache) > 5:
                 del cache[0]        
         cache.append(f'user: {question}')
         return cache
 
+def cache_localI(a):
+        global cache
+        if len(cache) > 5:
+                del cache[0]        
+        cache.append(f'Mya: {a}')
+        return cache
 
 def resumir():
         global minimo, response, response_local

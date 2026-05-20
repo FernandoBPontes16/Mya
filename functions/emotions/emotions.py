@@ -1,7 +1,67 @@
 import random
 
 words = {
-    'feliz': ('happiness',0.6,1.0),
+    'feliz': ('happiness', 0.6, 1.0),
+    'contente': ('happiness', 0.4, 0.8),
+    'alegre': ('happiness', 0.5, 0.9),
+    'otimista': ('happiness', 0.4, 0.7),
+    'radiante': ('happiness', 0.7, 1.0),
+    'maravilhoso': ('happiness', 0.8, 1.0),
+    ' rir': ('happiness', 0.6, 0.9),
+    'gratidão': ('happiness', 0.5, 0.8),
+
+    'morte': ('sadness', 0.8, 1.0),
+    'triste': ('sadness', 0.5, 0.8),
+    'chorar': ('sadness', 0.6, 0.9),
+    'deprimido': ('sadness', 0.8, 1.0),
+    'solitário': ('sadness', 0.5, 0.8),
+    'luto': ('sadness', 0.9, 1.0),
+    'desanimado': ('sadness', 0.3, 0.6),
+    'pena': ('sadness', 0.4, 0.7),
+
+    'raiva': ('angry', 0.6, 0.9),
+    'fúria': ('angry', 0.8, 1.0),
+    'ódio': ('angry', 0.8, 1.0),
+    'irritado': ('angry', 0.3, 0.6),
+    'bravo': ('angry', 0.4, 0.7),
+    'odiar': ('angry', 0.7, 0.9),
+    'gritar': ('angry', 0.5, 0.8),
+    'incomodado': ('angry', 0.2, 0.5),
+
+    'vergonha': ('embarrassed', 0.6, 0.9),
+    'tímido': ('embarrassed', 0.3, 0.6),
+    'constrangido': ('embarrassed', 0.5, 0.8),
+    'humilhado': ('embarrassed', 0.8, 1.0),
+    'corar': ('embarrassed', 0.4, 0.7),
+    'vacilo': ('embarrassed', 0.3, 0.5),
+
+    'medo': ('fear', 0.5, 0.8),
+    'terror': ('fear', 0.8, 1.0),
+    'pânico': ('fear', 0.8, 1.0),
+    'assustado': ('fear', 0.4, 0.7),
+    'ansioso': ('fear', 0.4, 0.6),
+    'perigo': ('fear', 0.6, 0.9),
+    'pesadelo': ('fear', 0.5, 0.8),
+
+    'nojo': ('disgusted', 0.6, 0.9),
+    'repulsa': ('disgusted', 0.7, 1.0),
+    'podre': ('disgusted', 0.5, 0.8),
+    'credo': ('disgusted', 0.4, 0.7),
+    'eca': ('disgusted', 0.4, 0.6),
+    'desprezo': ('disgusted', 0.6, 0.9),
+
+    'surpresa': ('surprise', 0.5, 0.8),
+    'choque': ('surprise', 0.7, 1.0),
+    'assustou': ('surprise', 0.5, 0.8),
+    'caramba': ('surprise', 0.3, 0.6),
+    'incrível': ('surprise', 0.6, 0.9),
+    'inesperado': ('surprise', 0.4, 0.7),
+
+    'normal': ('neutral', 0.1, 0.3),
+    'ok': ('neutral', 0.0, 0.2),
+    'tanto faz': ('neutral', 0.2, 0.4),
+    'simples': ('neutral', 0.1, 0.2),
+    'comum': ('neutral', 0.0, 0.3)
 }
 
 boost_words = {

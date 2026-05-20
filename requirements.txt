@@ -1,0 +1,5 @@
+google-genai
+mysql-connector-python
+python-dotenv
+openai
+numpy
