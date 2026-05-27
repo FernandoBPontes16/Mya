@@ -2,7 +2,7 @@ from openai import RateLimitError
 from google.genai import types
 from google.genai.errors import ClientError
 from database import connection
-from functions import summary
+from functions import summary, PConnections
 from functions.emotions import emotions 
 from ia import client
 from ia import modes
@@ -73,11 +73,12 @@ def enviar_menssagem(question):
     final_instruction = instruction + contexto_emocional
     try:
         enviar = client.gemini.models.generate_content_stream(
-            model="gemini-2.5-flash",
+            model="gemini-3.5-flash",
             contents=contexto_local,
             config={
-                "system_instruction": final_instruction
-            }
+                "system_instruction": final_instruction,
+                "tools": [PConnections.abrirPrograma],            
+            },                
         )
 
     except RateLimitError as e:
@@ -88,7 +89,13 @@ def enviar_menssagem(question):
     try:
         print("Mya: ", end='', flush=True)
         for chunk in enviar:
-            if chunk.text:
+            if chunk.function_calls:
+                for call in chunk.function_calls:
+                    if call.name == "abrirPrograma":
+                        argumentos = call.args
+                        PConnections.abrirPrograma(argumentos)
+
+            elif chunk.text:
                 print(chunk.text, end="", flush=True)
                 resposta_final += chunk.text
         print()    
