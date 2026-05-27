@@ -73,6 +73,7 @@ python app.py
 - Conversas com memoria
 - Respostas utilizando stream
 - Memoria com MySQL 
+- Sistema de abrir aplicativos do PC
 
 ## 👤 Desenvolvedor
 
