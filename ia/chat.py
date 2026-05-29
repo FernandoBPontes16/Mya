@@ -58,7 +58,7 @@ def enviar_menssagem(question):
         connection.cursor.execute('update settings set mode = "modo_normal" where id = 1')
         connection.meudb.commit()
     elif "/modo tecnico" in question:
-        current_mode = "modo_tecnico    "
+        current_mode = "modo_tecnico"
         instruction = modes.modo_tecnico
         connection.cursor.execute('update settings set mode = "modo_tecnico" where id = 1')   
         connection.meudb.commit()
@@ -77,7 +77,11 @@ def enviar_menssagem(question):
             contents=contexto_local,
             config={
                 "system_instruction": final_instruction,
-                "tools": [PConnections.abrirPrograma],            
+                "tools": [PConnections.abrirPrograma,
+                          PConnections.Pesquisar,
+                          PConnections.fechar,
+                          PConnections.tocarMusica
+                          ]            
             },                
         )
 
@@ -94,6 +98,15 @@ def enviar_menssagem(question):
                     if call.name == "abrirPrograma":
                         argumentos = call.args
                         PConnections.abrirPrograma(argumentos)
+                    elif call.name ==  "Pesquisar":
+                        argumentos = call.args
+                        PConnections.Pesquisar(**argumentos)
+                    elif call.name == "fechar":
+                        argumentos = call.args
+                        PConnections.fechar(argumentos)
+                    elif call.name == "tocarMusica":
+                        argumentos = call.args
+                        PConnections.tocarMusica(argumentos)            
 
             elif chunk.text:
                 print(chunk.text, end="", flush=True)
