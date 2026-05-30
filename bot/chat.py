@@ -4,8 +4,8 @@ from google.genai.errors import ClientError
 from database import connection
 from functions import summary, PConnections
 from functions.emotions import emotions 
-from ia import client
-from ia import modes
+from bot import client
+from bot import modes
 
 cache = []
 minimo = 0
@@ -80,7 +80,7 @@ def enviar_menssagem(question):
                 "tools": [PConnections.abrirPrograma,
                           PConnections.Pesquisar,
                           PConnections.fechar,
-                          PConnections.tocarMusica
+                          PConnections.comandos
                           ]            
             },                
         )
@@ -104,9 +104,9 @@ def enviar_menssagem(question):
                     elif call.name == "fechar":
                         argumentos = call.args
                         PConnections.fechar(argumentos)
-                    elif call.name == "tocarMusica":
+                    elif call.name == "comandos":
                         argumentos = call.args
-                        PConnections.tocarMusica(argumentos)            
+                        PConnections.comandos(argumentos)            
 
             elif chunk.text:
                 print(chunk.text, end="", flush=True)

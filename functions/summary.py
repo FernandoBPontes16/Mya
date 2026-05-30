@@ -1,5 +1,5 @@
 from database import connection
-from ia import client
+from bot import client
 import google.genai.errors
 
 minimo = 0

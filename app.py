@@ -1,5 +1,5 @@
 from functions import memory
-from ia import chat
+from bot import chat
 
 while True:
     question = input("User: ")   

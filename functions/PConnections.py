@@ -2,6 +2,7 @@ import subprocess
 import os
 import pyautogui
 import time
+from Exceptions import exceptions
 
 def buscarLocal(arquivoDesejado):
     pastasBuscar = os.path.join(os.path.expanduser("~"), r"AppData")
@@ -19,8 +20,17 @@ def abrirPrograma(nome: str):
     When targeting apps, always use the .exe extension to ensure the search works correctly.
     Notify the user that you successfully opened the app once it is launched.
     """
-    a = buscarLocal(nome)
-    subprocess.Popen(a)
+    try:
+        try:
+            subprocess.Popen(nome)
+
+        except FileNotFoundError:
+            raise exceptions.ProgramaNaoEncontrado()     
+        
+    except exceptions.ProgramaNaoEncontrado as e:
+        print(e)
+        a = buscarLocal(nome)
+        subprocess.Popen(a)
 
 def Pesquisar(pesquisa: str,navegador: str):
     """
@@ -52,20 +62,14 @@ def fechar(app: str):
     """
     subprocess.Popen(f'taskkill /f /im {app} >nul 2>&1')
 
-#Nao funcionando 
-def tocarMusica(pesquisa: str):
+def comandos(comando: str):
     """
-    This function opens Spotify and plays the song requested by the user.
-    CRITICAL RULE FOR THE ARGUMENT:
-    - The 'pesquisa' argument must contain ONLY the clean name of the song and artist.
-    - STRICTLY REMOVE all conversational text, commands, and trigger words like 'toca', 'tocar', 'a musica', 'play', 'mya', 'de', 'por favor'.
-    Example: If the user says "mya toca a musica what is love de twice pode ser?", 
-    the 'pesquisa' argument value MUST BE EXACTLY: "what is love twice"
+    This function is used to run data in the command prompt (cmd). 
+    If the user asks to create a file, folder, etc.
+    use the command in cmd correctly and create it with the name they request or the context of what they want the file or folder for. 
+    This can also be used to rename files or folders. 
+    Think of this function as allowing you to execute functions within the command prompt; 
+    it won't specify what they are, you'll have to know. It can be anything that can be done in cmd.
+    return only the command that will be executed in cmd.
     """
-    subprocess.Popen(r'cd "AppData\Roaming\Microsoft\Windows\Start Menu\Programs" && start Spotify')
-    pyautogui.hotkey('ctrl', 'l')
-    pyautogui.write(pesquisa)
-    pyautogui.press('tab')
-    for i in range(4):
-        pyautogui.press('right')
-    pyautogui.press('enter')    
+    subprocess.run(comando,shell=True)
