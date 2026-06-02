@@ -6,6 +6,7 @@ from functions import summary, PConnections
 from functions.emotions import emotions 
 from bot import client
 from bot import modes
+from bot.Image import Image
 
 cache = []
 minimo = 0
@@ -73,14 +74,15 @@ def enviar_menssagem(question):
     final_instruction = instruction + contexto_emocional
     try:
         enviar = client.gemini.models.generate_content_stream(
-            model="gemini-3.5-flash",
+            model="gemini-2.5-flash",
             contents=contexto_local,
             config={
                 "system_instruction": final_instruction,
                 "tools": [PConnections.abrirPrograma,
                           PConnections.Pesquisar,
                           PConnections.fechar,
-                          PConnections.comandos
+                          PConnections.comandos,
+                          Image.gerarImagem
                           ]            
             },                
         )
@@ -106,7 +108,10 @@ def enviar_menssagem(question):
                         PConnections.fechar(argumentos)
                     elif call.name == "comandos":
                         argumentos = call.args
-                        PConnections.comandos(argumentos)            
+                        PConnections.comandos(argumentos)
+                    elif call.name == "gerarImagem":
+                        argumentos = call.args
+                        Image.gerarImagem(argumentos)                
 
             elif chunk.text:
                 print(chunk.text, end="", flush=True)
