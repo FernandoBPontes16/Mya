@@ -82,7 +82,8 @@ def enviar_menssagem(question):
                           PConnections.Pesquisar,
                           PConnections.fechar,
                           PConnections.comandos,
-                          Image.gerarImagem
+                          PConnections.repouso,
+                          #Image.gerarImagem
                           ]            
             },                
         )
@@ -109,6 +110,8 @@ def enviar_menssagem(question):
                     elif call.name == "comandos":
                         argumentos = call.args
                         PConnections.comandos(argumentos)
+                    elif call.name == "repouso":
+                        PConnections.repouso()    
                     elif call.name == "gerarImagem":
                         argumentos = call.args
                         Image.gerarImagem(argumentos)                

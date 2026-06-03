@@ -2,8 +2,7 @@ import requests
 from Exceptions import exceptions
 
 valor1 = "https://image.pollinations.ai/prompt/"
-valor2 = "model=flux-2&key=sk_Ud5qObsCefTtDl468apY24YTzC435JT7"
-#cat?
+valor2 = "model=flux-2&key=sk_uDnZbduiAHsdCnR7kppcDWfhWEJ6idPO"
 
 def gerarImagem(parametros: str):
     """
@@ -29,6 +28,7 @@ def gerarImagem(parametros: str):
             r = requests.get(valor1)
             with open(r'C:\Users\User\Documents\MyaV2\bot\Image\Image.png', 'wb') as f:
                 f.write(r.content)
+            return valor1    
         except requests.exceptions.RequestException or Exception:
             raise exceptions.ImagemNaoGerada()        
     except exceptions.ImagemNaoGerada as e:

@@ -3,6 +3,7 @@ import os
 import pyautogui
 import time
 from Exceptions import exceptions
+import ctypes
 
 def buscarLocal(arquivoDesejado):
     pastasBuscar = os.path.join(os.path.expanduser("~"), r"AppData")
@@ -73,3 +74,9 @@ def comandos(comando: str):
     return only the command that will be executed in cmd.
     """
     subprocess.run(comando,shell=True)
+
+def repouso():
+    """
+    This function is only used to put the user's PC into sleep mode indefinitely until the user presses a key.
+    """
+    ctypes.windll.powrprof.SetSuspendState(0, 0, 0)
