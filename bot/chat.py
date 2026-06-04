@@ -99,27 +99,27 @@ def enviar_menssagem(question):
         for chunk in enviar:
             if chunk.function_calls:
                 for call in chunk.function_calls:
-                    if call.name == "abrirPrograma":
-                        argumentos = call.args
-                        PConnections.abrirPrograma(argumentos)
-                    elif call.name ==  "Pesquisar":
-                        argumentos = call.args
-                        PConnections.Pesquisar(**argumentos)
-                    elif call.name == "fechar":
-                        argumentos = call.args
-                        PConnections.fechar(argumentos)
-                    elif call.name == "comandos":
-                        argumentos = call.args
-                        PConnections.comandos(argumentos)
-                    elif call.name == "repouso":
-                        PConnections.repouso()
-                    elif call.name == "tocarMusica":
-                        argumentos = call.args
-                        PConnections.tocarMusica(argumentos)        
-                    elif call.name == "gerarImagem":
-                        argumentos = call.args
-                        Image.gerarImagem(argumentos)                
-
+                    match call.name:
+                        case "abrirPrograma":
+                            argumentos = call.args
+                            PConnections.abrirPrograma(argumentos)
+                        case "Pesquisar":
+                            argumentos = call.args
+                            PConnections.Pesquisar(argumentos)
+                        case "fechar":
+                            argumentos = call.args
+                            PConnections.fechar(argumentos)
+                        case "comandos":
+                            argumentos = call.args
+                            PConnections.comandos(argumentos)
+                        case "repouso":
+                            PConnections.repouso()
+                        case "tocarMusica":
+                            argumentos = call.args
+                            PConnections.tocarMusica(argumentos)
+                        case "gerarImagem":
+                            argumentos = call.args
+                            Image.gerarImagem(argumentos)    
             elif chunk.text:
                 print(chunk.text, end="", flush=True)
                 resposta_final += chunk.text
