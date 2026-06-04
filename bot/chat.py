@@ -83,6 +83,7 @@ def enviar_menssagem(question):
                           PConnections.fechar,
                           PConnections.comandos,
                           PConnections.repouso,
+                          PConnections.tocarMusica
                           #Image.gerarImagem
                           ]            
             },                
@@ -111,7 +112,10 @@ def enviar_menssagem(question):
                         argumentos = call.args
                         PConnections.comandos(argumentos)
                     elif call.name == "repouso":
-                        PConnections.repouso()    
+                        PConnections.repouso()
+                    elif call.name == "tocarMusica":
+                        argumentos = call.args
+                        PConnections.tocarMusica(argumentos)        
                     elif call.name == "gerarImagem":
                         argumentos = call.args
                         Image.gerarImagem(argumentos)                

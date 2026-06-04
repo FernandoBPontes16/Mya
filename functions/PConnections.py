@@ -41,14 +41,15 @@ def Pesquisar(pesquisa: str,navegador: str):
     If the browser is not mentioned, fill in the browser argument with "chrome". Return only the line of code, without markdown or explanations.
     When asked to open a website or go to a website, put the website's URL instead of the search bar.
     """
-    if navegador.lower() == "chrome":
+    if navegador.lower() == "chrome" or navegador.lower() == "google":
         subprocess.Popen(r'C:\Program Files\Google\Chrome\Application\chrome.exe')
     else:    
         pyautogui.press('win')
         pyautogui.write(navegador)
         pyautogui.press('enter')
     time.sleep(0.5)
-    pyautogui.click(691, 582)
+    pyautogui.press('tab')
+    pyautogui.press('enter')
     pyautogui.write(pesquisa)
     pyautogui.press('enter')
 
@@ -80,3 +81,26 @@ def repouso():
     This function is only used to put the user's PC into sleep mode indefinitely until the user presses a key.
     """
     ctypes.windll.powrprof.SetSuspendState(0, 0, 0)
+
+def tocarMusica(pesquisa: str):
+    """
+    This function is used to play music; 
+    retrieve only the song title requested by the user, 
+    and if necessary, the artist/band as well. 
+    Do not remove any part of the song title.
+    ex:
+        -user: play usseewa
+        -mya: ok!
+    you will return: usseewa
+    """
+    subprocess.Popen(r"C:\Users\User\AppData\Roaming\Spotify\Spotify.exe")
+    time.sleep(6)
+    pyautogui.hotkey('ctrl','l')
+    pyautogui.write(pesquisa, interval=0.2)
+    pyautogui.press('enter')
+    time.sleep(3)
+    pyautogui.press('tab')
+    for i in range(4):
+        pyautogui.press('right')
+        time.sleep(0.2)
+    pyautogui.press('enter')    
