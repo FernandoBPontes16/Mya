@@ -7,7 +7,7 @@ from functions.emotions import emotions
 from bot import client
 from bot import modes
 from bot.Image import Image
-from google.api_core.exceptions import InternalServerError
+from google.api_core.exceptions import ServerError
 from Exceptions import exceptions
 
 cache = []
@@ -91,7 +91,7 @@ def enviar_menssagem(question):
                             ]            
                 },                
             )
-        except InternalServerError:
+        except ServerError:
             raise exceptions.altaDemanda()
 
     except RateLimitError as e:

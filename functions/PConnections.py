@@ -50,7 +50,9 @@ def Pesquisar(pesquisa: str,navegador: str):
     time.sleep(0.5)
     pyautogui.press('tab')
     pyautogui.press('enter')
-    pyautogui.write(pesquisa)
+    time.sleep(0.5)
+    pyautogui.hotkey('crtl', 'l')
+    pyautogui.write(pesquisa, interval=0.1)
     pyautogui.press('enter')
 
 def fechar(app: str):
