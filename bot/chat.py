@@ -7,6 +7,8 @@ from functions.emotions import emotions
 from bot import client
 from bot import modes
 from bot.Image import Image
+from google.api_core.exceptions import InternalServerError
+from Exceptions import exceptions
 
 cache = []
 minimo = 0
@@ -73,26 +75,32 @@ def enviar_menssagem(question):
 
     final_instruction = instruction + contexto_emocional
     try:
-        enviar = client.gemini.models.generate_content_stream(
-            model="gemini-2.5-flash",
-            contents=contexto_local,
-            config={
-                "system_instruction": final_instruction,
-                "tools": [PConnections.abrirPrograma,
-                          PConnections.Pesquisar,
-                          PConnections.fechar,
-                          PConnections.comandos,
-                          PConnections.repouso,
-                          PConnections.tocarMusica
-                          #Image.gerarImagem
-                          ]            
-            },                
-        )
+        try:
+            enviar = client.gemini.models.generate_content_stream(
+                model="gemini-2.5-flash",
+                contents=contexto_local,
+                config={
+                    "system_instruction": final_instruction,
+                    "tools": [PConnections.abrirPrograma,
+                            PConnections.Pesquisar,
+                            PConnections.fechar,
+                            PConnections.comandos,
+                            PConnections.repouso,
+                            PConnections.tocarMusica
+                            #Image.gerarImagem
+                            ]            
+                },                
+            )
+        except InternalServerError:
+            raise exceptions.altaDemanda()
 
     except RateLimitError as e:
         print(f"detalhes do erro: {e}")
         print("Mya: Mya is so tired.... (API limit hit, try again after 60 seconds)")
         return
+    
+    except exceptions.altaDemanda as e:
+        print(e)
     
     try:
         print("Mya: ", end='', flush=True)
