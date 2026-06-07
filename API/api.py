@@ -9,7 +9,7 @@ app = FastAPI()
 def home():
     return {'status': 'online'}
 
-@app.get("/q={question}/Image={imageCondition}")
+@app.get("/q={question}&image={imageCondition}")
 def EnviarPergunta(question: str, imageCondition: bool):
     if imageCondition == True:
         memory.salvarDB('user', question)

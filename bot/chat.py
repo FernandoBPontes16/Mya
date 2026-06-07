@@ -9,6 +9,7 @@ from bot import modes
 from bot.Image import Image
 from google.api_core.exceptions import ServerError
 from Exceptions import exceptions
+from functions import jokes
 
 cache = []
 minimo = 0
@@ -86,7 +87,8 @@ def enviar_menssagem(question):
                             PConnections.fechar,
                             PConnections.comandos,
                             PConnections.repouso,
-                            PConnections.tocarMusica
+                            PConnections.tocarMusica,
+                            jokes.piada
                             #Image.gerarImagem
                             ]            
                 },                
@@ -125,6 +127,9 @@ def enviar_menssagem(question):
                         case "tocarMusica":
                             argumentos = call.args
                             PConnections.tocarMusica(argumentos)
+                        case "piada":
+                            jokes.piada()
+                            return
                         case "gerarImagem":
                             argumentos = call.args
                             Image.gerarImagem(argumentos)    
