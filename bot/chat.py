@@ -10,6 +10,8 @@ from bot.Image import Image
 from google.api_core.exceptions import ServerError
 from Exceptions import exceptions
 from functions import jokes
+from groq import Groq
+import json
 
 cache = []
 minimo = 0
@@ -18,6 +20,8 @@ connection.cursor.execute('select mode from settings where id = 1')
 result = connection.cursor.fetchone()
 connection.cursor.fetchall()
 
+with open(r"functions\tools.json", "r", encoding="utf-8") as f:
+    groq_tools = json.load(f)
 
 if result:
     current_mode = result[0]
@@ -77,21 +81,14 @@ def enviar_menssagem(question):
     final_instruction = instruction + contexto_emocional
     try:
         try:
-            enviar = client.gemini.models.generate_content_stream(
-                model="gemini-2.5-flash",
-                contents=contexto_local,
-                config={
-                    "system_instruction": final_instruction,
-                    "tools": [PConnections.abrirPrograma,
-                            PConnections.Pesquisar,
-                            PConnections.fechar,
-                            PConnections.comandos,
-                            PConnections.repouso,
-                            PConnections.tocarMusica,
-                            jokes.piada
-                            #Image.gerarImagem
-                            ]            
-                },                
+            enviar = client.groq.chat.completions.create(
+                model="llama-3.3-70b-versatile",
+                messages=[
+                    {"role": "system", "content": final_instruction},
+                    {"role": "user", "content": contexto_local}
+                ],
+                tools=groq_tools,
+                stream=True,                
             )
         except ServerError:
             raise exceptions.altaDemanda()
@@ -106,41 +103,59 @@ def enviar_menssagem(question):
     
     try:
         print("Mya: ", end='', flush=True)
+        tool_calls = []
+
         for chunk in enviar:
-            if chunk.function_calls:
-                for call in chunk.function_calls:
-                    match call.name:
-                        case "abrirPrograma":
-                            argumentos = call.args
-                            PConnections.abrirPrograma(argumentos)
-                        case "Pesquisar":
-                            argumentos = call.args
-                            PConnections.Pesquisar(argumentos)
-                        case "fechar":
-                            argumentos = call.args
-                            PConnections.fechar(argumentos)
-                        case "comandos":
-                            argumentos = call.args
-                            PConnections.comandos(argumentos)
-                        case "repouso":
-                            PConnections.repouso()
-                        case "tocarMusica":
-                            argumentos = call.args
-                            PConnections.tocarMusica(argumentos)
-                        case "piada":
-                            jokes.piada()
-                            return
-                        case "gerarImagem":
-                            argumentos = call.args
-                            Image.gerarImagem(argumentos)    
-            elif chunk.text:
-                print(chunk.text, end="", flush=True)
-                resposta_final += chunk.text
-        print()    
+            if chunk.choices and chunk.choices[0].delta.content:
+                texto = chunk.choices[0].delta.content
+                print(texto, end="", flush=True)
+                resposta_final += texto
+
+            if chunk.choices and chunk.choices[0].delta.tool_calls:
+                delta_tools = chunk.choices[0].delta.tool_calls
+                for tool_call in delta_tools:
+                    if len(tool_calls) <= tool_call.index:
+                        tool_calls.append(tool_call)
+                    else:
+                        if tool_call.function.arguments:
+                            tool_calls[tool_call.index].function.arguments += tool_call.function.arguments
+
+        print() 
+        
+        if tool_calls:
+            import json
+            for chamada in tool_calls:
+                func_obj = getattr(chamada, 'function', None)
+                nome_funcao = getattr(func_obj, 'name', None) if func_obj else None
+                
+                if not nome_funcao:
+                    continue
+
+                args_str = getattr(func_obj, 'arguments', '{}')
+                argumentos = json.loads(args_str) if args_str else {}
+
+                match nome_funcao:
+                    case "abrirPrograma":
+                        PConnections.abrirPrograma(argumentos.get("programa"))
+                    case "Pesquisar":
+                        PConnections.Pesquisar(argumentos.get("termo"))
+                    case "fechar":
+                        PConnections.fechar(argumentos.get("programa"))
+                    case "comandos":
+                        PConnections.comandos(argumentos.get("comando"))
+                    case "repouso":
+                        PConnections.repouso()
+                    case "tocarMusica":
+                        PConnections.tocarMusica(argumentos.get("musica"))
+                    case "piada":
+                        jokes.piada()
+                        return
+                    case "gerarImagem":
+                        Image.gerarImagem(argumentos.get("descricao"))
+
         resposta_final = resposta_final.replace('"', '')
         cache.append(summary.cache_localI(resposta_final))
         return resposta_final
     
-    except ClientError as e:
-        print(f"detalhes do erro: {e}")
-        print("Mya is so tired.... (API limit hit, try again after 60 seconds)")
+    except Exception as e:
+        print(f"\nErro ao processar stream da Groq: {e}")

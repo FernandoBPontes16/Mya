@@ -31,7 +31,7 @@ def abrirPrograma(nome: str):
     except exceptions.ProgramaNaoEncontrado as e:
         print(e)
         a = buscarLocal(nome)
-        subprocess.Popen(a)
+        subprocess.Popen(a, shell=True)
 
 def Pesquisar(pesquisa: str,navegador: str):
     """

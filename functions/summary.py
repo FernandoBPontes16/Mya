@@ -1,6 +1,7 @@
 from database import connection
 from bot import client
 import google.genai.errors
+from groq import Groq
 
 minimo = 0
 response_local = None
@@ -34,12 +35,14 @@ def resumir():
                         CRITICAL RULE: NEVER delete or ignore name changes, nicknames, or personal information that the user has revealed about themselves (e.g., if they asked to be called by another name, this MUST be explicitly stated in the summary).
                         {memoria}
                         """
-                        response = client.gemini.models.generate_content(
-                                model="gemini-2.5-flash-lite",
-                                contents=contexto
+                        response = client.groq.chat.completions.create(
+                                model="llama-3.3-70b-versatile",
+                                messages=[
+                                        {"role": "user", "content": contexto}
+                                ]
                         )
                         minimo = 1
-                        response_local = response.text
+                        response_local = response.choices[0].message.content
                         resumo = f"""
                         summary conversations:
                         {response_local}

@@ -1,0 +1,126 @@
+[
+  {
+    "type": "function",
+    "function": {
+      "name": "abrirPrograma",
+      "description": "Abre um programa ou aplicativo específico no computador do usuário.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "programa": {
+            "type": "string",
+            "description": "O nome do programa ou executável que deve ser aberto (ex: chrome, notepad, discord)."
+          }
+        },
+        "required": ["programa"]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "Pesquisar",
+      "description": "Faz uma busca ou pesquisa de informações na internet sobre um determinado assunto.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "termo": {
+            "type": "string",
+            "description": "O termo, frase ou pergunta que deve ser buscada na internet."
+          }
+        },
+        "required": ["termo"]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "fechar",
+      "description": "Fecha ou encerra um programa ou processo que está sendo executado no computador.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "programa": {
+            "type": "string",
+            "description": "O nome do programa que deve ser fechado."
+          }
+        },
+        "required": ["programa"]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "comandos",
+      "description": "Executa um comando de prompt ou terminal do sistema operacional.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "comando": {
+            "type": "string",
+            "description": "O comando de texto exato que deve ser rodado no terminal."
+          }
+        },
+        "required": ["comando"]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "repouso",
+      "description": "Coloca o sistema ou o próprio assistente (bot) em modo de suspensão ou repouso.",
+      "parameters": {
+        "type": "object",
+        "properties": {}
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "tocarMusica",
+      "description": "Procura e toca uma música ou artista solicitado pelo usuário.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "musica": {
+            "type": "string",
+            "description": "O nome da música, álbum ou artista que o usuário quer ouvir."
+          }
+        },
+        "required": ["musica"]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "piada",
+      "description": "Conta uma piada curta e engraçada para descontrair o usuário.",
+      "parameters": {
+        "type": "object",
+        "properties": {}
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "gerarImagem",
+      "description": "Gera ou cria uma imagem baseada em uma descrição de texto fornecida pelo usuário.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "descricao": {
+            "type": "string",
+            "description": "A descrição detalhada da imagem que deve ser gerada."
+          }
+        },
+        "required": ["descricao"]
+      }
+    }
+  }
+]
