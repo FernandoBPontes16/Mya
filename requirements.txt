@@ -6,3 +6,4 @@ numpy
 pyautogui
 fastapi
 groq
+uvicorn

@@ -3,16 +3,16 @@
     "type": "function",
     "function": {
       "name": "abrirPrograma",
-      "description": "Abre um programa ou aplicativo específico no computador do usuário.",
+      "description": "Abre um programa ou aplicativo específico no computador do usuário. Use para VS Code, Chrome, Spotify, etc.",
       "parameters": {
         "type": "object",
         "properties": {
-          "programa": {
+          "nome": {
             "type": "string",
-            "description": "O nome do programa ou executável que deve ser aberto (ex: chrome, notepad, discord)."
+            "description": "O nome do executável do programa (ex: 'chrome.exe', 'notepad.exe', 'spotify.exe'). Sempre inclua a extensão .exe."
           }
         },
-        "required": ["programa"]
+        "required": ["nome"]
       }
     }
   },
@@ -20,16 +20,21 @@
     "type": "function",
     "function": {
       "name": "Pesquisar",
-      "description": "Faz uma busca ou pesquisa de informações na internet sobre um determinado assunto.",
+      "description": "Faz uma busca na internet ou abre um site específico usando um navegador de escolha do usuário.",
       "parameters": {
         "type": "object",
         "properties": {
-          "termo": {
+          "pesquisa": {
             "type": "string",
-            "description": "O termo, frase ou pergunta que deve ser buscada na internet."
+            "description": "O termo de busca ou a URL completa do site que o usuário deseja acessar."
+          },
+          "navegador": {
+            "type": "string",
+            "description": "O nome do navegador a ser usado (ex: 'chrome', 'edge', 'firefox'). Se o usuário não especificar, use obrigatoriamente 'chrome'.",
+            "default": "chrome"
           }
         },
-        "required": ["termo"]
+        "required": ["pesquisa", "navegador"]
       }
     }
   },
@@ -37,16 +42,16 @@
     "type": "function",
     "function": {
       "name": "fechar",
-      "description": "Fecha ou encerra um programa ou processo que está sendo executado no computador.",
+      "description": "Fecha ou encerra um programa ou processo ativo no computador.",
       "parameters": {
         "type": "object",
         "properties": {
-          "programa": {
+          "app": {
             "type": "string",
-            "description": "O nome do programa que deve ser fechado."
+            "description": "O nome exato do arquivo .exe do programa que deve ser fechado (ex: 'chrome.exe', 'discord.exe'). Sem espaços."
           }
         },
-        "required": ["programa"]
+        "required": ["app"]
       }
     }
   },
@@ -54,13 +59,13 @@
     "type": "function",
     "function": {
       "name": "comandos",
-      "description": "Executa um comando de prompt ou terminal do sistema operacional.",
+      "description": "Executa um comando de prompt (CMD) ou terminal no sistema para criar, mover ou renomear arquivos e pastas.",
       "parameters": {
         "type": "object",
         "properties": {
           "comando": {
             "type": "string",
-            "description": "O comando de texto exato que deve ser rodado no terminal."
+            "description": "O comando de texto exato que deve ser rodado no CMD do Windows."
           }
         },
         "required": ["comando"]
@@ -71,7 +76,7 @@
     "type": "function",
     "function": {
       "name": "repouso",
-      "description": "Coloca o sistema ou o próprio assistente (bot) em modo de suspensão ou repouso.",
+      "description": "Coloca o computador do usuário em modo de suspensão/espera imediatamente.",
       "parameters": {
         "type": "object",
         "properties": {}
@@ -82,16 +87,16 @@
     "type": "function",
     "function": {
       "name": "tocarMusica",
-      "description": "Procura e toca uma música ou artista solicitado pelo usuário.",
+      "description": "Procura e toca uma música, artista ou álbum específico no Spotify do usuário.",
       "parameters": {
         "type": "object",
         "properties": {
-          "musica": {
+          "pesquisa": {
             "type": "string",
-            "description": "O nome da música, álbum ou artista que o usuário quer ouvir."
+            "description": "O nome da música e/ou do artista solicitado, sem cortes."
           }
         },
-        "required": ["musica"]
+        "required": ["pesquisa"]
       }
     }
   },
@@ -99,7 +104,7 @@
     "type": "function",
     "function": {
       "name": "piada",
-      "description": "Conta uma piada curta e engraçada para descontrair o usuário.",
+      "description": "Gera uma piada curta e engraçada para o usuário.",
       "parameters": {
         "type": "object",
         "properties": {}
@@ -110,16 +115,16 @@
     "type": "function",
     "function": {
       "name": "gerarImagem",
-      "description": "Gera ou cria uma imagem baseada em uma descrição de texto fornecida pelo usuário.",
+      "description": "Cria uma imagem digital baseada em uma descrição detalhada em texto fornecida pelo usuário.",
       "parameters": {
         "type": "object",
         "properties": {
-          "descricao": {
+          "prompt": {
             "type": "string",
-            "description": "A descrição detalhada da imagem que deve ser gerada."
+            "description": "A descrição detalhada em texto (prompt) para alimentar a IA de geração de imagem."
           }
         },
-        "required": ["descricao"]
+        "required": ["prompt"]
       }
     }
   }
